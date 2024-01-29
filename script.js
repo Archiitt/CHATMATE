@@ -30,6 +30,7 @@ const createChatElement = (content, className) => {
     chatDiv.innerHTML = content;
     return chatDiv; // Return the created chat div
 }
+
 const getChatResponse = async (incomingChatDiv) => {
     const API_URL = "https://api.openai.com/v1/completions";
     const pElement = document.createElement("p");
@@ -50,7 +51,8 @@ const getChatResponse = async (incomingChatDiv) => {
             stop: null
         })
     }
-        // Send POST request to API, get response and set the reponse as paragraph element text
+
+    // Send POST request to API, get response and set the reponse as paragraph element text
     try {
         const response = await (await fetch(API_URL, requestOptions)).json();
         pElement.textContent = response.choices[0].text.trim();
@@ -65,6 +67,7 @@ const getChatResponse = async (incomingChatDiv) => {
     localStorage.setItem("all-chats", chatContainer.innerHTML);
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
 }
+
 const copyResponse = (copyBtn) => {
     // Copy the text content of the response to the clipboard
     const reponseTextElement = copyBtn.parentElement.querySelector("p");
@@ -72,6 +75,7 @@ const copyResponse = (copyBtn) => {
     copyBtn.textContent = "done"; 
     setTimeout(() => copyBtn.textContent = "content_copy", 1000);
 }
+
 const showTypingAnimation = () => {
     // Display the typing animation and call the getChatResponse function
     const html = `<div class="chat-content">
@@ -91,6 +95,7 @@ const showTypingAnimation = () => {
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
     getChatResponse(incomingChatDiv);
 }
+
 const handleOutgoingChat = () => {
     userText = chatInput.value.trim(); // Get chatInput value and remove extra spaces
     if(!userText) return; // If chatInput is empty return from here
@@ -105,7 +110,8 @@ const handleOutgoingChat = () => {
                         <p>${userText}</p>
                     </div>
                 </div>`;
-        // Create an outgoing chat div with user's message and append it to chat container
+
+    // Create an outgoing chat div with user's message and append it to chat container
     const outgoingChatDiv = createChatElement(html, "outgoing");
     chatContainer.querySelector(".default-text")?.remove();
     chatContainer.appendChild(outgoingChatDiv);
@@ -120,6 +126,7 @@ deleteButton.addEventListener("click", () => {
         loadDataFromLocalstorage();
     }
 });
+
 themeButton.addEventListener("click", () => {
     // Toggle body's class for the theme mode and save the updated theme to the local storage 
     document.body.classList.toggle("light-mode");
@@ -143,4 +150,6 @@ chatInput.addEventListener("keydown", (e) => {
         handleOutgoingChat();
     }
 });
-    
+
+loadDataFromLocalstorage();
+sendButton.addEventListener("click", handleOutgoingChat);
