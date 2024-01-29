@@ -105,5 +105,20 @@ const handleOutgoingChat = () => {
                         <p>${userText}</p>
                     </div>
                 </div>`;
+        // Create an outgoing chat div with user's message and append it to chat container
+    const outgoingChatDiv = createChatElement(html, "outgoing");
+    chatContainer.querySelector(".default-text")?.remove();
+    chatContainer.appendChild(outgoingChatDiv);
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
+    setTimeout(showTypingAnimation, 500);
+}
+
+deleteButton.addEventListener("click", () => {
+    // Remove the chats from local storage and call loadDataFromLocalstorage function
+    if(confirm("Are you sure you want to delete all the chats?")) {
+        localStorage.removeItem("all-chats");
+        loadDataFromLocalstorage();
+    }
+});
 
     
